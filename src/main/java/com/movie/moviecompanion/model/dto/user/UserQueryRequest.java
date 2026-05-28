@@ -1,4 +1,4 @@
-package com.movie.moviecompanion.model.dto;
+package com.movie.moviecompanion.model.dto.user;
 
 import com.movie.moviecompanion.common.PageRequest;
 import io.swagger.v3.oas.annotations.media.Schema;

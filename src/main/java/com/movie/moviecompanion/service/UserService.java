@@ -1,6 +1,6 @@
 package com.movie.moviecompanion.service;
 
-import com.movie.moviecompanion.model.dto.UserQueryRequest;
+import com.movie.moviecompanion.model.dto.user.UserQueryRequest;
 import com.movie.moviecompanion.model.vo.LoginUserVO;
 import com.movie.moviecompanion.model.vo.UserVO;
 import com.mybatisflex.core.query.QueryWrapper;

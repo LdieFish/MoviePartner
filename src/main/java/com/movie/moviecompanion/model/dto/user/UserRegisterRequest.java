@@ -1,4 +1,4 @@
-package com.movie.moviecompanion.model.dto;
+package com.movie.moviecompanion.model.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

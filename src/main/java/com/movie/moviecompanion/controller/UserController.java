@@ -9,7 +9,7 @@ import com.movie.moviecompanion.constant.UserConstant;
 import com.movie.moviecompanion.exception.BusinessException;
 import com.movie.moviecompanion.exception.ErrorCode;
 import com.movie.moviecompanion.exception.ThrowUtils;
-import com.movie.moviecompanion.model.dto.*;
+import com.movie.moviecompanion.model.dto.user.*;
 import com.movie.moviecompanion.model.vo.LoginUserVO;
 import com.movie.moviecompanion.model.vo.UserVO;
 import com.mybatisflex.core.paginate.Page;

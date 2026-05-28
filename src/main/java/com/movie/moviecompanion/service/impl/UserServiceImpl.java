@@ -5,7 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.movie.moviecompanion.exception.BusinessException;
 import com.movie.moviecompanion.exception.ErrorCode;
-import com.movie.moviecompanion.model.dto.UserQueryRequest;
+import com.movie.moviecompanion.model.dto.user.UserQueryRequest;
 import com.movie.moviecompanion.model.enums.UserRoleEnum;
 import com.movie.moviecompanion.model.vo.LoginUserVO;
 import com.movie.moviecompanion.model.vo.UserVO;
