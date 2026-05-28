@@ -14,6 +14,7 @@ import com.movie.moviecompanion.model.vo.LoginUserVO;
 import com.movie.moviecompanion.model.vo.UserVO;
 import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/user")
+@Tag(name = "用户模块")
 public class UserController {
 
     @Resource
