@@ -1,6 +1,7 @@
 package com.movie.moviecompanion.controller;
 
 import com.movie.moviecompanion.constant.AppConstant;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -30,6 +31,7 @@ public class StaticResourceController {
      * 访问格式：http://localhost:8080/api/static/{deployKey}[/{fileName}]
      */
     @GetMapping("/{deployKey}/**")
+    @Operation(summary = "提供静态资源访问")
     public ResponseEntity<Resource> serveStaticResource(
             @PathVariable String deployKey,
             HttpServletRequest request) {
