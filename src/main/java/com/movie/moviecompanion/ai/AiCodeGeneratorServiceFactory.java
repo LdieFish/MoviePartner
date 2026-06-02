@@ -2,7 +2,7 @@ package com.movie.moviecompanion.ai;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.movie.moviecompanion.ai.model.HtmlCodeResult;
+import com.movie.moviecompanion.service.ChatHistoryService;
 import dev.langchain4j.community.store.memory.chat.redis.RedisChatMemoryStore;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatModel;
@@ -30,6 +30,9 @@ public class AiCodeGeneratorServiceFactory {
 
     @Resource
     private RedisChatMemoryStore redisChatMemoryStore;
+
+    @Resource
+    private ChatHistoryService chatHistoryService;
 
     /**
      * 根据 appId 获取服务
@@ -94,6 +97,8 @@ public class AiCodeGeneratorServiceFactory {
                 .chatMemoryStore(redisChatMemoryStore)
                 .maxMessages(20)
                 .build();
+        //从数据库加载对话历史到记忆中
+        chatHistoryService.loadChatHistoryToMemory(appId,chatMemory,20);
         return AiServices.builder(AiCodeGeneratorService.class)
                 .chatModel(chatModel)
                 .streamingChatModel(streamingChatModel)
