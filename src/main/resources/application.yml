@@ -32,4 +32,25 @@ knife4j:
   enable: true
   setting:
     language: zh_cn
+# AI
+#langchain4j:
+#  open-ai:
+#    chat-model:
+#      base-url: https://token-plan-cn.xiaomimimo.com/v1
+#      api-key:
+#      model-name: mimo-v2.5-pro
+#      log-requests: true
+#      log-responses: true
+#      #      strict-json-schema: true
+#      #      response-format: json_object
+#      max-tokens: 8192
+#      max-retries: 1
+#    streaming-chat-model:
+#      base-url: https://token-plan-cn.xiaomimimo.com/v1
+#      api-key:
+#      model-name: mimo-v2.5-pro
+#      max-tokens: 8192
+#      log-requests: true
+#      log-responses: true
+
 

@@ -1,6 +1,7 @@
 package com.movie.moviecompanion.core;
 
 import com.movie.moviecompanion.ai.AiCodeGeneratorService;
+import com.movie.moviecompanion.ai.AiCodeGeneratorServiceFactory;
 import com.movie.moviecompanion.ai.model.HtmlCodeResult;
 import com.movie.moviecompanion.ai.model.MultiFileCodeResult;
 import com.movie.moviecompanion.core.parser.CodeParserExecutor;
@@ -22,8 +23,10 @@ import java.io.File;
 @Slf4j
 public class AiCodeGeneratorFacade {
 
+//    @Autowired
+//    private AiCodeGeneratorService aiCodeGeneratorService;
     @Autowired
-    private AiCodeGeneratorService aiCodeGeneratorService;
+    private AiCodeGeneratorServiceFactory aiCodeGeneratorServiceFactory;
 
 
 
@@ -39,6 +42,8 @@ public class AiCodeGeneratorFacade {
         if (codeGenTypeEnum == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "生成类型不能为空");
         }
+        // 根据 appId 获取对应ai服务实例
+        AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId);
         return switch (codeGenTypeEnum) {
             case HTML -> {
                 HtmlCodeResult result = aiCodeGeneratorService.generateHtmlCode(userMessage);
@@ -66,6 +71,8 @@ public class AiCodeGeneratorFacade {
         if (codeGenTypeEnum == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "生成类型不能为空");
         }
+        // 根据 appId 获取对应ai服务实例
+        AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId);
         return switch (codeGenTypeEnum) {
             case HTML -> {
                 Flux<String> codeStream = aiCodeGeneratorService.generateHtmlCodeStream(userMessage);
