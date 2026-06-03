@@ -44,6 +44,7 @@ knife4j:
 # AI
 #langchain4j:
 #  open-ai:
+#      #同步
 #    chat-model:
 #      base-url: https://token-plan-cn.xiaomimimo.com/v1
 #      api-key:
@@ -54,7 +55,16 @@ knife4j:
 #      #      response-format: json_object
 #      max-tokens: 8192
 #      max-retries: 1
+#      #流式
 #    streaming-chat-model:
+#      base-url: https://token-plan-cn.xiaomimimo.com/v1
+#      api-key:
+#      model-name: mimo-v2.5-pro
+#      max-tokens: 8192
+#      log-requests: true
+#      log-responses: true
+#      #推理
+#    reasoning-streaming-chat-model:
 #      base-url: https://token-plan-cn.xiaomimimo.com/v1
 #      api-key:
 #      model-name: mimo-v2.5-pro
