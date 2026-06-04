@@ -5,6 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.movie.moviecompanion.ai.model.message.*;
+import com.movie.moviecompanion.constant.AppConstant;
+import com.movie.moviecompanion.core.builder.VueProjectBuilder;
 import com.movie.moviecompanion.model.entity.User;
 import com.movie.moviecompanion.model.enums.ChatHistoryMessageTypeEnum;
 import com.movie.moviecompanion.service.ChatHistoryService;
@@ -23,6 +25,9 @@ import java.util.Set;
 @Slf4j
 @Component
 public class JsonMessageStreamHandler {
+
+    @Resource
+    private VueProjectBuilder vueProjectBuilder;
 
     /**
      * 处理 TokenStream（VUE_PROJECT）
@@ -51,6 +56,8 @@ public class JsonMessageStreamHandler {
                     // 流式响应完成后，添加 AI 消息到对话历史
                     String aiResponse = chatHistoryStringBuilder.toString();
                     chatHistoryService.addChatMessage(appId, aiResponse, ChatHistoryMessageTypeEnum.AI.getValue(), loginUser.getId());
+                    String projectPath = AppConstant.CODE_OUTPUT_ROOT_DIR + "/vue_project/" + appId;
+                    vueProjectBuilder.buildProjectAsync(projectPath);
                 })
                 .doOnError(error -> {
                     // 如果AI回复失败，也要记录错误消息
