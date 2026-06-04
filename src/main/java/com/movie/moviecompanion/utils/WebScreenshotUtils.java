@@ -26,6 +26,7 @@ import java.util.UUID;
 @Slf4j
 public class WebScreenshotUtils {
 
+    //todo 可以用队列或者ThreadLocal处理并发的情况
     private static final WebDriver webDriver;
 
     static {

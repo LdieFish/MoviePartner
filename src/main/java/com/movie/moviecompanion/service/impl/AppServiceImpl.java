@@ -19,6 +19,7 @@ import com.movie.moviecompanion.model.enums.CodeGenTypeEnum;
 import com.movie.moviecompanion.model.vo.AppVO;
 import com.movie.moviecompanion.model.vo.UserVO;
 import com.movie.moviecompanion.service.ChatHistoryService;
+import com.movie.moviecompanion.service.ScreenshotService;
 import com.movie.moviecompanion.service.UserService;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
@@ -59,6 +60,8 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App>  implements AppS
     private StreamHandlerExecutor streamHandlerExecutor;
     @Autowired
     private VueProjectBuilder vueProjectBuilder;
+    @Resource
+    private ScreenshotService screenshotService;
 
     @Override
     public AppVO getAppVO(App app) {
@@ -204,7 +207,31 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App>  implements AppS
         boolean updateResult = this.updateById(updateApp);
         ThrowUtils.throwIf(!updateResult, ErrorCode.OPERATION_ERROR, "更新应用部署信息失败");
         // 9. 返回可访问的 URL
-        return String.format("%s/%s/", AppConstant.CODE_DEPLOY_HOST, deployKey);
+        String appDeployUrl = String.format("%s/%s/", AppConstant.CODE_DEPLOY_HOST, deployKey);
+        // 10.生成并更新应用截图
+        generateAppScreenshotAsync(appId, appDeployUrl);
+        return appDeployUrl;
+    }
+
+    /**
+     * 异步生成应用截图
+     * @param appId
+     * @param appUrl
+     */
+    @Override
+    public void generateAppScreenshotAsync(Long appId, String appUrl){
+        //使用虚拟线程
+        Thread.startVirtualThread(()->{
+            //生成截图并上传
+            String screnshoutUrl = screenshotService.generateAndUploadScreenshot(appUrl);
+            //更新应用的截图
+            App build = App.builder()
+                    .id(appId)
+                    .cover(screnshoutUrl)
+                    .build();
+            boolean update = this.updateById(build);
+            ThrowUtils.throwIf(!update, ErrorCode.OPERATION_ERROR, "更新应用截图失败");
+        });
     }
 
 
