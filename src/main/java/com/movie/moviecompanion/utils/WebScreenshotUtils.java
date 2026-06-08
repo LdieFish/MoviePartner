@@ -115,7 +115,7 @@ public class WebScreenshotUtils {
             WebDriver driver = new ChromeDriver(options);
 //            WebDriver driver = new EdgeDriver(options);
             // 设置页面加载超时
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(120));
             // 设置隐式等待
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
             return driver;

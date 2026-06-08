@@ -12,6 +12,7 @@ import com.movie.moviecompanion.service.UserService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/chatHistory")
+@Tag(name = "对话历史接口")
 public class ChatHistoryController {
 
     @Autowired

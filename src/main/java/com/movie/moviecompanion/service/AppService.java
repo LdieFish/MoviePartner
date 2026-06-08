@@ -1,5 +1,6 @@
 package com.movie.moviecompanion.service;
 
+import com.movie.moviecompanion.model.dto.app.AppAddRequest;
 import com.movie.moviecompanion.model.dto.app.AppQueryRequest;
 import com.movie.moviecompanion.model.entity.User;
 import com.movie.moviecompanion.model.vo.AppVO;
@@ -16,6 +17,8 @@ import java.util.List;
  * @author master
  */
 public interface AppService extends IService<App> {
+
+    Long addApp(AppAddRequest appAddRequest, User loginUser);
 
     /**
      * 获取应用封装类
