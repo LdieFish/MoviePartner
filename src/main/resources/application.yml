@@ -68,7 +68,15 @@ knife4j:
 #      base-url: https://token-plan-cn.xiaomimimo.com/v1
 #      api-key:
 #      model-name: mimo-v2.5-pro
-#      max-tokens: 8192
+#      max-tokens: 32768
+#      temperature: 0.1
+#      log-requests: true
+#      log-responses: true
+#    # 智能路由 AI 模型配置（用于简单的分类任务）
+#    routing-chat-model:
+#      base-url: https://token-plan-cn.xiaomimimo.com/v1
+#      api-key:
+#      model-name: mimo-v2.5-pro
 #      log-requests: true
 #      log-responses: true
 # 添加 COS 对象存储配置（需要从腾讯云获取）
