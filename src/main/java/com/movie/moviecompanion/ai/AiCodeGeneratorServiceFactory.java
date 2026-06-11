@@ -2,6 +2,7 @@ package com.movie.moviecompanion.ai;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.movie.moviecompanion.ai.guardrail.PromptSafetyInputGuardrail;
 import com.movie.moviecompanion.ai.tools.ToolManager;
 import com.movie.moviecompanion.exception.BusinessException;
 import com.movie.moviecompanion.exception.ErrorCode;
@@ -96,6 +97,9 @@ public class AiCodeGeneratorServiceFactory {
                         .hallucinatedToolNameStrategy(toolExecutionRequest -> ToolExecutionResultMessage.from(
                                 toolExecutionRequest, "Error: there is no tool called " + toolExecutionRequest.name()
                         ))
+                        .inputGuardrails(new PromptSafetyInputGuardrail())
+//                        .outputGuardrails(new RetryOutputGuardrail()) //添加输出护轨无法流式输出
+                        .maxSequentialToolsInvocations(20) //最多连续调用工具次数
                         .build();
             }
             case HTML, MULTI_FILE -> {
@@ -105,6 +109,9 @@ public class AiCodeGeneratorServiceFactory {
                         .chatModel(chatModel)
                         .streamingChatModel(openAiStreamingChatModel)
                         .chatMemory(chatMemory)
+                        .inputGuardrails(new PromptSafetyInputGuardrail())
+//                        .outputGuardrails(new RetryOutputGuardrail()) //添加输出护轨无法流式输出
+                        .maxSequentialToolsInvocations(15) //最多连续调用工具次数
                         .build();
             }
             default -> throw new BusinessException(ErrorCode.SYSTEM_ERROR,
