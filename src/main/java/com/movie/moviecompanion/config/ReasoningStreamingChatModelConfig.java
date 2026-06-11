@@ -7,7 +7,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+/**
+ * 推理流式模型（用于 Vue 项目生成，带工具调用）
+ */
 @Configuration
 @ConfigurationProperties(prefix = "langchain4j.open-ai.reasoning-streaming-chat-model")
 @Data
@@ -39,5 +43,15 @@ public class ReasoningStreamingChatModelConfig {
                 .logRequests(logRequests)
                 .logResponses(logResponses)
                 .build();
+    }
+    @Bean("reasoningOpenAiStreamingChatModelTaskExecutor")
+    AsyncTaskExecutor reasoningOpenAiStreamingChatModelTaskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setThreadNamePrefix("LangChain4j-Reasoning-");
+        taskExecutor.setCorePoolSize(6);
+        taskExecutor.setMaxPoolSize(12);
+        taskExecutor.setQueueCapacity(100);
+        taskExecutor.initialize();
+        return taskExecutor;
     }
 }

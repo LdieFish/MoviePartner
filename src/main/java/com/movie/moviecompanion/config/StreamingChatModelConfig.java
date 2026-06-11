@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * 流式对话模型配置
@@ -42,5 +44,15 @@ public class StreamingChatModelConfig {
                 .logRequests(logRequests)
                 .logResponses(logResponses)
                 .build();
+    }
+    @Bean("openAiStreamingChatModelTaskExecutor")
+    AsyncTaskExecutor openAiStreamingChatModelTaskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setThreadNamePrefix("LangChain4j-OpenAI-");
+        taskExecutor.setCorePoolSize(6);
+        taskExecutor.setMaxPoolSize(12);
+        taskExecutor.setQueueCapacity(100);
+        taskExecutor.initialize();
+        return taskExecutor;
     }
 }

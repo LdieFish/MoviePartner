@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * 智能路由模型配置
@@ -45,5 +47,16 @@ public class RoutingAiModelConfig {
                 .logRequests(logRequests)
                 .logResponses(logResponses)
                 .build();
+    }
+
+    @Bean("routingChatModelTaskExecutor")
+    AsyncTaskExecutor routingChatModelTaskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setThreadNamePrefix("LangChain4j-Routing-");
+        taskExecutor.setCorePoolSize(4);
+        taskExecutor.setMaxPoolSize(8);
+        taskExecutor.setQueueCapacity(50);
+        taskExecutor.initialize();
+        return taskExecutor;
     }
 }
