@@ -8,6 +8,8 @@ import com.movie.moviecompanion.ai.model.MultiFileCodeResult;
 import com.movie.moviecompanion.ai.model.message.AiResponseMessage;
 import com.movie.moviecompanion.ai.model.message.ToolExecutedMessage;
 import com.movie.moviecompanion.ai.model.message.ToolRequestMessage;
+import com.movie.moviecompanion.constant.AppConstant;
+import com.movie.moviecompanion.core.builder.VueProjectBuilder;
 import com.movie.moviecompanion.core.parser.CodeParserExecutor;
 import com.movie.moviecompanion.core.saver.CodeFileSaverExecutor;
 import com.movie.moviecompanion.exception.BusinessException;
@@ -16,6 +18,7 @@ import com.movie.moviecompanion.model.enums.CodeGenTypeEnum;
 import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.service.tool.ToolExecution;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +38,8 @@ public class AiCodeGeneratorFacade {
     @Autowired
     private AiCodeGeneratorServiceFactory aiCodeGeneratorServiceFactory;
 
-
+    @Resource
+    private VueProjectBuilder vueProjectBuilder;
 
 
     /**
@@ -91,7 +95,7 @@ public class AiCodeGeneratorFacade {
             }
             case VUE_PROJECT -> {
                 TokenStream codeStream = aiCodeGeneratorService.generateVueProjectCodeStream(appId, userMessage);
-                yield processTokenStream(codeStream);
+                yield processTokenStream(codeStream, appId);
             }
             default -> {
                 String errorMessage = "不支持的生成类型：" + codeGenTypeEnum.getValue();
@@ -105,7 +109,7 @@ public class AiCodeGeneratorFacade {
      * @param tokenStream TokenStream 对象
      * @return Flux<String> 流式响应
      */
-    private Flux<String> processTokenStream(TokenStream tokenStream) {
+    private Flux<String> processTokenStream(TokenStream tokenStream, Long appId) {
         return Flux.create(sink -> {
             tokenStream.onPartialResponse((String partialResponse) -> {
                         AiResponseMessage aiResponseMessage = new AiResponseMessage(partialResponse);
@@ -120,6 +124,9 @@ public class AiCodeGeneratorFacade {
                         sink.next(JSONUtil.toJsonStr(toolExecutedMessage));
                     })
                     .onCompleteResponse((ChatResponse response) -> {
+                        // 执行 Vue 项目构建（同步执行，确保预览时项目已就绪）
+                        String projectPath = AppConstant.CODE_OUTPUT_ROOT_DIR + File.separator + "vue_project_" + appId;
+                        vueProjectBuilder.buildProject(projectPath);
                         sink.complete();
                     })
                     .onError((Throwable error) -> {
