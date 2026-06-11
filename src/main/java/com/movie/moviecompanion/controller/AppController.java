@@ -14,8 +14,9 @@ import com.movie.moviecompanion.exception.ErrorCode;
 import com.movie.moviecompanion.exception.ThrowUtils;
 import com.movie.moviecompanion.model.dto.app.*;
 import com.movie.moviecompanion.model.entity.User;
-import com.movie.moviecompanion.model.enums.CodeGenTypeEnum;
 import com.movie.moviecompanion.model.vo.AppVO;
+import com.movie.moviecompanion.ratelimter.annotation.RateLimit;
+import com.movie.moviecompanion.ratelimter.enums.RateLimitType;
 import com.movie.moviecompanion.service.ProjectDownloadService;
 import com.movie.moviecompanion.service.UserService;
 import com.mybatisflex.core.paginate.Page;
@@ -300,6 +301,7 @@ public class AppController {
 
     @GetMapping(value = "/chat/gen/code", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @Operation(summary = "聊天生成代码")
+    @RateLimit(limitType = RateLimitType.USER, rate = 5, rateInterval = 60, message = "请求过于频繁,请稍后再试")
     public Flux<ServerSentEvent<String>> chatToGenCode(@RequestParam Long appId,
                                                        @RequestParam String message,
                                                        HttpServletRequest request) {
