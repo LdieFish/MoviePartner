@@ -16,14 +16,18 @@ public class HtmlCodeParser implements CodeParser<HtmlCodeResult> {
     @Override
     public HtmlCodeResult parseCode(String codeContent) {
         HtmlCodeResult result = new HtmlCodeResult();
-        // 提取 HTML 代码
+        // 优先从 markdown 代码块提取 HTML
         String htmlCode = extractHtmlCode(codeContent);
         if (htmlCode != null && !htmlCode.trim().isEmpty()) {
             result.setHtmlCode(htmlCode.trim());
-        } else {
-            // 如果没有找到代码块，将整个内容作为HTML
-            result.setHtmlCode(codeContent.trim());
+            return result;
         }
+        // 其次识别未包裹代码块的完整 HTML 文档
+        String trimmed = codeContent.trim();
+        if (HtmlDocumentUtils.isHtmlDocument(trimmed)) {
+            result.setHtmlCode(trimmed);
+        }
+        // 纯文本对话回复不设置 htmlCode，保存阶段会跳过，避免覆盖已有页面
         return result;
     }
 

@@ -45,12 +45,31 @@ public class CosManager {
     public String uploadFile(String key, File file) {
         PutObjectResult result = putObject(key, file);
         if (result != null) {
-            String url = String.format("%s%s", cosClientConfig.getHost(), key);
+            String url = buildFileUrl(key);
             log.info("文件上传到 COS 成功：{} -> {}", file.getName(), url);
             return url;
         } else {
             log.error("文件上传到 COS 失败：{}，返回结果为空", file.getName());
             return null;
         }
+    }
+
+    /**
+     * 构建 COS 文件访问 URL
+     */
+    private String buildFileUrl(String key) {
+        String host = cosClientConfig.getHost();
+        if (host == null || host.isBlank()) {
+            return key;
+        }
+        host = host.trim();
+        if (!host.startsWith("http://") && !host.startsWith("https://")) {
+            host = "https://" + host;
+        }
+        if (host.endsWith("/")) {
+            host = host.substring(0, host.length() - 1);
+        }
+        String normalizedKey = key.startsWith("/") ? key : "/" + key;
+        return host + normalizedKey;
     }
 }

@@ -2,6 +2,7 @@ package com.movie.moviecompanion.core;
 
 import com.movie.moviecompanion.ai.model.HtmlCodeResult;
 import com.movie.moviecompanion.ai.model.MultiFileCodeResult;
+import com.movie.moviecompanion.core.parser.HtmlDocumentUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,8 +27,7 @@ public class CodeParser {
         String htmlCode = extractHtmlCode(codeContent);
         if (htmlCode != null && !htmlCode.trim().isEmpty()) {
             result.setHtmlCode(htmlCode.trim());
-        } else {
-            // 如果没有找到代码块，将整个内容作为HTML
+        } else if (HtmlDocumentUtils.isHtmlDocument(codeContent)) {
             result.setHtmlCode(codeContent.trim());
         }
         return result;
