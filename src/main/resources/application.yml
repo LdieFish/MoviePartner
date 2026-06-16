@@ -94,6 +94,15 @@ knife4j:
 #dashscope:
 #  api-key:
 #  image-model: wan2.2-t2i-flash
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
 
 
 
