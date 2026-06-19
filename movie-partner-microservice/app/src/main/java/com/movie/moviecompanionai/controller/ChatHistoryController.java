@@ -15,10 +15,8 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -35,10 +33,6 @@ public class ChatHistoryController {
 
     @Autowired
     private ChatHistoryService chatHistoryService;
-
-    @Resource
-    @Lazy
-    private InnerUserService userService;
 
     /**
      * 分页查询某个应用的对话历史（游标查询）

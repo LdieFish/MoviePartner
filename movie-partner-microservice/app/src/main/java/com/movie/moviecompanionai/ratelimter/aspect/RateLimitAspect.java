@@ -16,15 +16,12 @@ import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateIntervalUnit;
 import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
-
-import static com.movie.moviecompanionai.ratelimter.enums.RateLimitType.*;
 
 /**
  * 限流切面核心逻辑
@@ -36,10 +33,6 @@ public class RateLimitAspect {
 
     @Resource
     private RedissonClient redissonClient;
-
-    @Resource
-    @Lazy
-    private InnerUserService userService;
 
     @Before("@annotation(rateLimit)")
     public void doBefore(JoinPoint point, RateLimit rateLimit) {
